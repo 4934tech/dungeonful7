@@ -2,6 +2,7 @@ export interface Character {
     name: string
     class: string
     race: string
+    subrace?: string
     background: string
     alignment: string
     level: number
@@ -16,9 +17,5 @@ export interface Character {
     }
     skills: Record<string, boolean>
     equipment: string[]
-}
-
-export interface CharacterSheetProps {
-    character: Character
 }
 

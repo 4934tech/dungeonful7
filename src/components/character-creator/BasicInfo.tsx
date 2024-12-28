@@ -1,10 +1,18 @@
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
+import RaceSelector from './RaceSelector'
 
 export default function BasicInfo({character, updateCharacter}: any) {
+    const handleRaceChange = (raceId: string, subraceId?: string) => {
+        updateCharacter({
+            race: raceId,
+            subrace: subraceId
+        })
+    }
+
     return (
-        <div className="space-y-4">
+        <div className="space-y-8">
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                     <Label htmlFor="name">Character Name</Label>
@@ -28,23 +36,6 @@ export default function BasicInfo({character, updateCharacter}: any) {
                             <SelectItem value="wizard">Wizard</SelectItem>
                             <SelectItem value="rogue">Rogue</SelectItem>
                             <SelectItem value="cleric">Cleric</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="race">Race</Label>
-                    <Select
-                        value={character.race}
-                        onValueChange={(value) => updateCharacter({race: value})}
-                    >
-                        <SelectTrigger id="race">
-                            <SelectValue placeholder="Select race"/>
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="human">Human</SelectItem>
-                            <SelectItem value="elf">Elf</SelectItem>
-                            <SelectItem value="dwarf">Dwarf</SelectItem>
-                            <SelectItem value="halfling">Halfling</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -96,6 +87,14 @@ export default function BasicInfo({character, updateCharacter}: any) {
                         onChange={(e) => updateCharacter({experience: parseInt(e.target.value)})}
                     />
                 </div>
+            </div>
+
+            <div className="pt-6 border-t">
+                <RaceSelector
+                    selectedRace={character.race}
+                    selectedSubrace={character.subrace}
+                    onRaceChange={handleRaceChange}
+                />
             </div>
         </div>
     )
