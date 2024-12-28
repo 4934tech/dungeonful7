@@ -4,10 +4,9 @@ import {useState} from 'react'
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group"
 import {Label} from "@/components/ui/label"
-import {ScrollArea} from "@/components/ui/scroll-area"
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
 import {races} from '@/data/races'
-import {type Race, type Subrace} from '@/types/race'
+import {type Race} from '@/types/race'
 
 interface RaceSelectorProps {
     selectedRace: string
@@ -26,12 +25,6 @@ export default function RaceSelector({selectedRace, selectedSubrace, onRaceChang
 
     const handleSubraceChange = (subraceName: string) => {
         onRaceChange(selectedRace, subraceName)
-    }
-
-    const formatHeight = (inches: number) => {
-        const feet = Math.floor(inches / 12)
-        const remainingInches = inches % 12
-        return `${feet}'${remainingInches}"`
     }
 
     const renderRaceDetails = (race: Race) => {
