@@ -111,3 +111,14 @@ export interface Character {
     skills: Record<string, boolean>
     equipment: string[]
 }
+
+export interface UpdateCharacterProps {
+    character: Character
+    updateCharacter: (data: Partial<Character>) => void
+}
+
+export interface UpdateDescriptionProps {
+    description: CharacterDescription
+    onUpdate: (data: Partial<CharacterDescription>) => void
+}
+

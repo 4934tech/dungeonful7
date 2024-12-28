@@ -1,8 +1,11 @@
 'use client'
 
 import {useState} from 'react'
+import {Button} from "@/components/ui/button"
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
-import RaceSelector from './components/race-selector'
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
+import BasicInfo from './components/BasicInfo'
+import Description from './components/Description'
 import {type Character, type CustomRace, type CustomSubrace} from './types'
 
 const defaultCharacter: Character = {
@@ -52,6 +55,13 @@ export default function CharacterCreation() {
         setCharacter(prev => ({...prev, ...newData}))
     }
 
+    const updateDescription = (newData: Partial<Character['description']>) => {
+        setCharacter(prev => ({
+            ...prev,
+            description: {...prev.description, ...newData}
+        }))
+    }
+
     const handleCustomRaceAdd = (race: CustomRace) => {
         setCustomRaces(prev => [...prev, race])
     }
@@ -64,28 +74,30 @@ export default function CharacterCreation() {
         ))
     }
 
-    const handleRaceChange = (raceId: string, subraceId?: string) => {
-        updateCharacter({
-            race: raceId,
-            subrace: subraceId
-        })
-    }
-
     return (
         <Card className="w-full max-w-4xl mx-auto">
             <CardHeader>
-                <CardTitle>Race Selection</CardTitle>
+                <CardTitle>Create Your Character</CardTitle>
             </CardHeader>
             <CardContent>
-                <RaceSelector
-                    selectedRace={character.race}
-                    selectedSubrace={character.subrace || ''}
-                    onRaceChange={handleRaceChange}
-                    customRaces={customRaces}
-                    onCustomRaceAdd={handleCustomRaceAdd}
-                    onCustomSubraceAdd={handleCustomSubraceAdd}
-                />
+                <Tabs defaultValue="basic" className="space-y-4">
+                    <TabsList className="grid grid-cols-2 w-full">
+                        <TabsTrigger value="basic">Basic Info</TabsTrigger>
+                        <TabsTrigger value="description">Description</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="basic">
+                        <BasicInfo character={character} updateCharacter={updateCharacter}/>
+                    </TabsContent>
+                    <TabsContent value="description">
+                        <Description description={character.description} onUpdate={updateDescription}/>
+                    </TabsContent>
+                </Tabs>
+                <div className="mt-6 flex justify-end space-x-4">
+                    <Button variant="outline">Save Character</Button>
+                    <Button>Finish</Button>
+                </div>
             </CardContent>
         </Card>
     )
 }
+
