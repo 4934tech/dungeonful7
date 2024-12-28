@@ -41,7 +41,7 @@ export interface Race {
         category: 'Small' | 'Medium' | 'Large'
         description: string
     }
-    speed: number
+    speed: unknown
     darkvision?: number
     features: RaceFeature[]
     languages: string[]
@@ -120,5 +120,14 @@ export interface UpdateCharacterProps {
 export interface UpdateDescriptionProps {
     description: CharacterDescription
     onUpdate: (data: Partial<CharacterDescription>) => void
+}
+
+export interface RaceSelectorProps {
+    selectedRace: string
+    selectedSubrace?: string
+    onRaceChange: (raceId: string, subraceId?: string) => void
+    customRaces: CustomRace[]
+    onCustomRaceAdd: (race: CustomRace) => void
+    onCustomSubraceAdd: (raceName: string, subrace: CustomSubrace) => void
 }
 

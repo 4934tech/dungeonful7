@@ -86,7 +86,13 @@ export default function CharacterCreation() {
                         <TabsTrigger value="description">Description</TabsTrigger>
                     </TabsList>
                     <TabsContent value="basic">
-                        <BasicInfo character={character} updateCharacter={updateCharacter}/>
+                        <BasicInfo
+                            character={character}
+                            updateCharacter={updateCharacter}
+                            customRaces={customRaces}
+                            onCustomRaceAdd={handleCustomRaceAdd}
+                            onCustomSubraceAdd={handleCustomSubraceAdd}
+                        />
                     </TabsContent>
                     <TabsContent value="description">
                         <Description description={character.description} onUpdate={updateDescription}/>

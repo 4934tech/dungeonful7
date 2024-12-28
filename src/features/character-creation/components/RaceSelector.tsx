@@ -1,8 +1,6 @@
-'use client'
-
 import {useState} from 'react'
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
-import {RadioGroupItem} from "@/components/ui/radio-group"
+import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group"
 import {Label} from "@/components/ui/label"
 import {Input} from "@/components/ui/input"
 import {Button} from "@/components/ui/button"
@@ -10,16 +8,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible"
 import {ChevronDown, ChevronUp} from 'lucide-react'
 import {BASE_RACES, DARKVISION_OPTIONS, SPEED_OPTIONS} from '../constants/race-options'
-import {type CustomRace, type CustomSubrace} from '../types'
-
-interface RaceSelectorProps {
-    selectedRace: string
-    selectedSubrace: string
-    onRaceChange: (raceId: string, subraceId?: string) => void
-    customRaces: CustomRace[]
-    onCustomRaceAdd: (race: CustomRace) => void
-    onCustomSubraceAdd: (raceName: string, subrace: CustomSubrace) => void
-}
+import {RaceSelectorProps} from '../types'
 
 export default function RaceSelector({
                                          selectedRace,
@@ -94,140 +83,144 @@ export default function RaceSelector({
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-4">
-                        {/* Base Races */}
-                        {BASE_RACES.map(race => (
-                            <Collapsible
-                                key={race}
-                                open={showInfo[race]}
-                                onOpenChange={() => toggleInfo(race)}
-                            >
-                                <div className="flex items-center space-x-2 py-2">
-                                    <RadioGroupItem
-                                        value={race.toLowerCase()}
-                                        id={race.toLowerCase()}
-                                        checked={selectedRace === race.toLowerCase()}
-                                        onClick={() => onRaceChange(race.toLowerCase())}
-                                    />
-                                    <Label htmlFor={race.toLowerCase()}>{race}</Label>
-                                    <CollapsibleTrigger className="ml-auto">
-                                        {showInfo[race] ? <ChevronUp/> : <ChevronDown/>}
-                                    </CollapsibleTrigger>
-                                </div>
-                                <CollapsibleContent className="pl-6 space-y-2">
-                                    <div className="text-sm text-muted-foreground">
-                                        Base speed: 30 ft.
-                                        {race !== 'Human' && <div>Darkvision: 60 ft.</div>}
+                        <RadioGroup value={selectedRace} onValueChange={(value) => onRaceChange(value)}>
+                            {/* Base Races */}
+                            {BASE_RACES.map(race => (
+                                <Collapsible
+                                    key={race}
+                                    open={showInfo[race]}
+                                    onOpenChange={() => toggleInfo(race)}
+                                >
+                                    <div className="flex items-center space-x-2 py-2">
+                                        <RadioGroupItem
+                                            value={race.toLowerCase()}
+                                            id={race.toLowerCase()}
+                                        />
+                                        <Label htmlFor={race.toLowerCase()}>{race}</Label>
+                                        <CollapsibleTrigger className="ml-auto">
+                                            {showInfo[race] ? <ChevronUp/> : <ChevronDown/>}
+                                        </CollapsibleTrigger>
                                     </div>
-                                </CollapsibleContent>
-                            </Collapsible>
-                        ))}
+                                    <CollapsibleContent className="pl-6 space-y-2">
+                                        <div className="text-sm text-muted-foreground">
+                                            Base speed: 30 ft.
+                                            {race !== 'Human' && <div>Darkvision: 60 ft.</div>}
+                                        </div>
+                                    </CollapsibleContent>
+                                </Collapsible>
+                            ))}
 
-                        {/* Custom Races */}
-                        {customRaces.map(race => (
-                            <Collapsible
-                                key={race.name}
-                                open={showInfo[race.name]}
-                                onOpenChange={() => toggleInfo(race.name)}
-                            >
-                                <div className="flex items-center space-x-2 py-2">
-                                    <RadioGroupItem
-                                        value={race.name.toLowerCase()}
-                                        id={race.name.toLowerCase()}
-                                        checked={selectedRace === race.name.toLowerCase()}
-                                        onClick={() => onRaceChange(race.name.toLowerCase())}
-                                    />
-                                    <Label htmlFor={race.name.toLowerCase()}>{race.name}</Label>
-                                    <CollapsibleTrigger className="ml-auto">
-                                        {showInfo[race.name] ? <ChevronUp/> : <ChevronDown/>}
-                                    </CollapsibleTrigger>
-                                </div>
-                                <CollapsibleContent className="pl-6 space-y-2">
-                                    <div className="text-sm text-muted-foreground">
-                                        <div>Speed: {race.speed} ft.</div>
-                                        <div>Darkvision: {race.darkvision} ft.</div>
+                            {/* Custom Races */}
+                            {customRaces.map(race => (
+                                <Collapsible
+                                    key={race.name}
+                                    open={showInfo[race.name]}
+                                    onOpenChange={() => toggleInfo(race.name)}
+                                >
+                                    <div className="flex items-center space-x-2 py-2">
+                                        <RadioGroupItem
+                                            value={race.name.toLowerCase()}
+                                            id={race.name.toLowerCase()}
+                                        />
+                                        <Label htmlFor={race.name.toLowerCase()}>{race.name}</Label>
+                                        <CollapsibleTrigger className="ml-auto">
+                                            {showInfo[race.name] ? <ChevronUp/> : <ChevronDown/>}
+                                        </CollapsibleTrigger>
                                     </div>
-                                    {/* Custom Subraces */}
-                                    {race.subraces.length > 0 && (
-                                        <div className="mt-2">
-                                            <h4 className="text-sm font-medium mb-2">Subraces:</h4>
-                                            <div className="space-y-2">
-                                                {race.subraces.map(subrace => (
-                                                    <div key={subrace.name} className="flex items-center space-x-2">
-                                                        <RadioGroupItem
-                                                            value={`${race.name.toLowerCase()}-${subrace.name.toLowerCase()}`}
-                                                            id={`${race.name.toLowerCase()}-${subrace.name.toLowerCase()}`}
-                                                            checked={selectedSubrace === subrace.name.toLowerCase()}
-                                                            onClick={() => onRaceChange(race.name.toLowerCase(), subrace.name.toLowerCase())}
-                                                        />
-                                                        <Label
-                                                            htmlFor={`${race.name.toLowerCase()}-${subrace.name.toLowerCase()}`}>
-                                                            {subrace.name}
-                                                        </Label>
+                                    <CollapsibleContent className="pl-6 space-y-2">
+                                        <div className="text-sm text-muted-foreground">
+                                            <div>Speed: {race.speed} ft.</div>
+                                            <div>Darkvision: {race.darkvision} ft.</div>
+                                        </div>
+                                        {/* Custom Subraces */}
+                                        {race.subraces.length > 0 && (
+                                            <div className="mt-2">
+                                                <h4 className="text-sm font-medium mb-2">Subraces:</h4>
+                                                <RadioGroup
+                                                    value={selectedSubrace}
+                                                    onValueChange={(value) => onRaceChange(race.name.toLowerCase(), value)}
+                                                >
+                                                    <div className="space-y-2">
+                                                        {race.subraces.map(subrace => (
+                                                            <div key={subrace.name}
+                                                                 className="flex items-center space-x-2">
+                                                                <RadioGroupItem
+                                                                    value={subrace.name.toLowerCase()}
+                                                                    id={`${race.name.toLowerCase()}-${subrace.name.toLowerCase()}`}
+                                                                />
+                                                                <Label
+                                                                    htmlFor={`${race.name.toLowerCase()}-${subrace.name.toLowerCase()}`}>
+                                                                    {subrace.name}
+                                                                </Label>
+                                                            </div>
+                                                        ))}
                                                     </div>
-                                                ))}
+                                                </RadioGroup>
+                                            </div>
+                                        )}
+                                        {/* Add Subrace Form */}
+                                        <div className="mt-4 space-y-2">
+                                            <h4 className="text-sm font-medium">Add Subrace</h4>
+                                            <div className="space-y-2">
+                                                <Input
+                                                    placeholder="Subrace name"
+                                                    value={newCustomSubrace.name}
+                                                    onChange={(e) => setNewCustomSubrace(prev => ({
+                                                        ...prev,
+                                                        name: e.target.value
+                                                    }))}
+                                                />
+                                                <Select
+                                                    value={newCustomSubrace.darkvision.toString()}
+                                                    onValueChange={(value) => setNewCustomSubrace(prev => ({
+                                                        ...prev,
+                                                        darkvision: parseInt(value)
+                                                    }))}
+                                                >
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select darkvision"/>
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {DARKVISION_OPTIONS.map(option => (
+                                                            <SelectItem key={option.value}
+                                                                        value={option.value.toString()}>
+                                                                {option.label}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                <Select
+                                                    value={newCustomSubrace.speed.toString()}
+                                                    onValueChange={(value) => setNewCustomSubrace(prev => ({
+                                                        ...prev,
+                                                        speed: parseInt(value)
+                                                    }))}
+                                                >
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select speed"/>
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {SPEED_OPTIONS.map(option => (
+                                                            <SelectItem key={option.value}
+                                                                        value={option.value.toString()}>
+                                                                {option.label}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                <Button
+                                                    size="sm"
+                                                    onClick={() => handleAddCustomSubrace(race.name)}
+                                                    className="w-full"
+                                                >
+                                                    Add Subrace
+                                                </Button>
                                             </div>
                                         </div>
-                                    )}
-                                    {/* Add Subrace Form */}
-                                    <div className="mt-4 space-y-2">
-                                        <h4 className="text-sm font-medium">Add Subrace</h4>
-                                        <div className="space-y-2">
-                                            <Input
-                                                placeholder="Subrace name"
-                                                value={newCustomSubrace.name}
-                                                onChange={(e) => setNewCustomSubrace(prev => ({
-                                                    ...prev,
-                                                    name: e.target.value
-                                                }))}
-                                            />
-                                            <Select
-                                                value={newCustomSubrace.darkvision.toString()}
-                                                onValueChange={(value) => setNewCustomSubrace(prev => ({
-                                                    ...prev,
-                                                    darkvision: parseInt(value)
-                                                }))}
-                                            >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Select darkvision"/>
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {DARKVISION_OPTIONS.map(option => (
-                                                        <SelectItem key={option.value} value={option.value.toString()}>
-                                                            {option.label}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            <Select
-                                                value={newCustomSubrace.speed.toString()}
-                                                onValueChange={(value) => setNewCustomSubrace(prev => ({
-                                                    ...prev,
-                                                    speed: parseInt(value)
-                                                }))}
-                                            >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Select speed"/>
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {SPEED_OPTIONS.map(option => (
-                                                        <SelectItem key={option.value} value={option.value.toString()}>
-                                                            {option.label}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            <Button
-                                                size="sm"
-                                                onClick={() => handleAddCustomSubrace(race.name)}
-                                                className="w-full"
-                                            >
-                                                Add Subrace
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </CollapsibleContent>
-                            </Collapsible>
-                        ))}
+                                    </CollapsibleContent>
+                                </Collapsible>
+                            ))}
+                        </RadioGroup>
 
                         {/* Add Custom Race Form */}
                         <Card className="mt-4">

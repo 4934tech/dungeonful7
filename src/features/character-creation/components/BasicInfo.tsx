@@ -1,10 +1,22 @@
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
-import {UpdateCharacterProps} from '../types'
+import {CustomRace, CustomSubrace, UpdateCharacterProps} from '../types'
 import RaceSelector from './RaceSelector'
 
-export default function BasicInfo({character, updateCharacter}: UpdateCharacterProps) {
+interface BasicInfoProps extends UpdateCharacterProps {
+    customRaces: CustomRace[]
+    onCustomRaceAdd: (race: CustomRace) => void
+    onCustomSubraceAdd: (raceName: string, subrace: CustomSubrace) => void
+}
+
+export default function BasicInfo({
+                                      character,
+                                      updateCharacter,
+                                      customRaces,
+                                      onCustomRaceAdd,
+                                      onCustomSubraceAdd
+                                  }: BasicInfoProps) {
     const handleRaceChange = (raceId: string, subraceId?: string) => {
         updateCharacter({
             race: raceId,
@@ -95,6 +107,9 @@ export default function BasicInfo({character, updateCharacter}: UpdateCharacterP
                     selectedRace={character.race}
                     selectedSubrace={character.subrace}
                     onRaceChange={handleRaceChange}
+                    customRaces={customRaces}
+                    onCustomRaceAdd={onCustomRaceAdd}
+                    onCustomSubraceAdd={onCustomSubraceAdd}
                 />
             </div>
         </div>

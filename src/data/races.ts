@@ -1,4 +1,4 @@
-import {Race} from '@/types/race'
+import {Race} from '@/features/character-creation/types'
 
 export const races: Race[] = [
     {
@@ -51,15 +51,7 @@ export const races: Race[] = [
             },
             {
                 name: 'Mountain Dwarf',
-                description: 'As a mountain dwarf, you'
-                re strong
-                and hardy,
-                accustomed to
-                a difficult
-                life
-                in rugged
-                terrain
-                .',
+                description: 'As a mountain dwarf, you\'re strong and hardy, accustomed to a difficult life in rugged terrain.',
                 abilityScoreIncreases: [
                     {ability: 'strength', increase: 2}
                 ],
@@ -68,7 +60,7 @@ export const races: Race[] = [
         ],
         proficiencies: {
             weapons: ['Battleaxe', 'Handaxe', 'Light Hammer', 'Warhammer'],
-            tools: ['Smith's Tools', 'Brewer's Supplies', 'Mason's Tools']
+            tools: ["Smith's Tools", "Brewer's Supplies", "Mason's Tools"]
         }
     },
     {
@@ -81,16 +73,7 @@ export const races: Race[] = [
         age: {
             maturity: 100,
             lifespan: 750,
-            description: 'Although elves reach physical maturity at about the same age as humans, they don'
-            t consider
-            themselves adults
-            until they
-            reach 100.
-            They can
-            live to
-            be 750
-            years old.
-            '
+            description: 'Although elves reach physical maturity at about the same age as humans, they don\'t consider themselves adults until they reach 100. They can live to be 750 years old.'
         },
         alignment: 'Elves love freedom, variety, and self-expression, so they lean strongly toward chaotic good.',
         size: {
@@ -110,15 +93,11 @@ export const races: Race[] = [
             },
             {
                 name: 'Fey Ancestry',
-                description: 'You have advantage on saving throws against being charmed, and magic can'
-                t put
-                you to
-                sleep
-                .'
+                description: 'You have advantage on saving throws against being charmed, and magic can\'t put you to sleep.'
             },
             {
                 name: 'Trance',
-                description: 'Elves don't need to sleep.Instead, they meditate deeply for 4 hours a day.'
+                description: 'Elves don\'t need to sleep.Instead, they meditate deeply for 4 hours a day.'
             }
         ],
         languages: ['Common', 'Elvish'],
@@ -159,5 +138,5 @@ export const races: Race[] = [
             }
         ]
     }
-]
+];
 
