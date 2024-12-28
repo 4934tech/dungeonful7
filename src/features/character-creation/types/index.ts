@@ -41,7 +41,7 @@ export interface Race {
         category: 'Small' | 'Medium' | 'Large'
         description: string
     }
-    speed: unknown
+    speed: number
     darkvision?: number
     features: RaceFeature[]
     languages: string[]
@@ -99,6 +99,8 @@ export interface Character {
     alignment: string
     level: number
     experience: number
+    favoredEnemies: string[]
+    favoredTerrains: string[]
     description: CharacterDescription
     abilities: {
         strength: number

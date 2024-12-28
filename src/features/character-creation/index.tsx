@@ -6,6 +6,7 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
 import BasicInfo from './components/BasicInfo'
 import Description from './components/Description'
+import ClassLevel from './components/class-level'
 import {type Character, type CustomRace, type CustomSubrace} from './types'
 
 const defaultCharacter: Character = {
@@ -16,6 +17,8 @@ const defaultCharacter: Character = {
     alignment: '',
     level: 1,
     experience: 0,
+    favoredEnemies: [],
+    favoredTerrains: [],
     description: {
         playerName: '',
         age: 0,
@@ -81,8 +84,9 @@ export default function CharacterCreation() {
             </CardHeader>
             <CardContent>
                 <Tabs defaultValue="basic" className="space-y-4">
-                    <TabsList className="grid grid-cols-2 w-full">
+                    <TabsList className="grid w-full grid-cols-3">
                         <TabsTrigger value="basic">Basic Info</TabsTrigger>
+                        <TabsTrigger value="class">Class & Level</TabsTrigger>
                         <TabsTrigger value="description">Description</TabsTrigger>
                     </TabsList>
                     <TabsContent value="basic">
@@ -92,6 +96,12 @@ export default function CharacterCreation() {
                             customRaces={customRaces}
                             onCustomRaceAdd={handleCustomRaceAdd}
                             onCustomSubraceAdd={handleCustomSubraceAdd}
+                        />
+                    </TabsContent>
+                    <TabsContent value="class">
+                        <ClassLevel
+                            character={character}
+                            onUpdate={updateCharacter}
                         />
                     </TabsContent>
                     <TabsContent value="description">
