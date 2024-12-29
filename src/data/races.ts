@@ -20,9 +20,7 @@ export const races: Race[] = [
             category: 'Medium',
             description: 'Dwarves stand between 4 and 5 feet tall and average about 150 pounds.'
         },
-        speed: {
-            walk: 25
-        },
+        speed: 25,
         darkvision: 60,
         features: [
             {
@@ -82,9 +80,7 @@ export const races: Race[] = [
             category: 'Medium',
             description: 'Elves range from under 5 to over 6 feet tall and have slender builds.'
         },
-        speed: {
-            walk: 30
-        },
+        speed: 30,
         darkvision: 60,
         features: [
             {
